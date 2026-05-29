@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Temperaturas · Castellón de la Plana</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif;background:#f5f5f4;color:#1c1917;min-height:100vh}
@@ -15,14 +17,19 @@ header{background:#fff;border-bottom:1px solid #e7e5e4;padding:14px 24px;display
 .header-left h1{font-size:17px;font-weight:500;letter-spacing:-0.01em}
 .header-left p{font-size:12px;color:#78716c;margin-top:2px}
 
-.update-btn{display:flex;align-items:center;gap:7px;padding:8px 16px;font-size:13px;font-weight:500;border:1px solid #d6d3d1;border-radius:8px;background:#fff;color:#1c1917;cursor:pointer;transition:background .15s,transform .1s;white-space:nowrap;font-family:inherit}
-.update-btn:hover{background:#f5f5f4;border-color:#a8a29e}
-.update-btn:active{transform:scale(0.97)}
-.update-btn:disabled{opacity:0.55;cursor:not-allowed;transform:none}
-.spin{display:inline-block;animation:spin .8s linear infinite}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;font-size:13px;font-weight:500;border:1px solid #d6d3d1;border-radius:8px;background:#fff;color:#1c1917;cursor:pointer;transition:background .15s,transform .1s;white-space:nowrap;font-family:inherit}
+.btn:hover{background:#f5f5f4;border-color:#a8a29e}
+.btn:active{transform:scale(0.97)}
+.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.btn-primary{background:#f0fdf4;border-color:#86efac;color:#166534}
+.btn-primary:hover{background:#dcfce7}
+.btn-sm{padding:5px 10px;font-size:12px;border-radius:6px}
+.spin{display:inline-block;animation:spin .8s linear infinite;font-style:normal}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.container{max-width:920px;margin:0 auto;padding:20px 16px 40px}
+.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+.container{max-width:960px;margin:0 auto;padding:20px 16px 40px}
 
 .card{background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:20px;margin-bottom:16px}
 
@@ -31,19 +38,22 @@ header{background:#fff;border-bottom:1px solid #e7e5e4;padding:14px 24px;display
 .month-btn:hover{background:#f5f5f4;color:#1c1917}
 .month-btn.active{background:#f0fdf4;color:#166534;border-color:#86efac;font-weight:500}
 
-.chart-title{font-size:14px;font-weight:500;color:#44403c;margin-bottom:10px;min-height:20px}
+.chart-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.chart-title{font-size:14px;font-weight:500;color:#44403c}
+.zoom-hint{font-size:11px;color:#a8a29e}
 
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:#78716c;margin-bottom:14px;align-items:center}
 .legend-item{display:flex;align-items:center;gap:5px}
 .sw-bar{width:14px;height:14px;border-radius:3px;background:rgba(93,202,165,0.5);border:1px solid rgba(15,110,86,0.45)}
 .sw-dot{width:10px;height:10px;border-radius:50%;background:#085041}
-.sw-line{width:20px;height:2px;border-top:2px dashed}
+.sw-line{width:20px;height:0;border-top:2px dashed}
 
-.chart-wrapper{position:relative;height:320px}
-#overlay{position:absolute;inset:0;background:rgba(255,255,255,0.88);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:8px;font-size:13px;color:#78716c}
+.chart-wrapper{position:relative;height:340px}
+#overlay{position:absolute;inset:0;background:rgba(255,255,255,0.9);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:8px;font-size:13px;color:#78716c;z-index:5}
 .spinner{width:26px;height:26px;border:2px solid #e7e5e4;border-top-color:#1D9E75;border-radius:50%;animation:spin .8s linear infinite}
+#progress-text{font-size:12px;color:#a8a29e}
 #empty-state{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#a8a29e;font-size:14px}
-#empty-state p{font-size:12px;color:#c4b5a5}
+#empty-state p{font-size:12px}
 
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:16px}
 .stat-card{background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:14px 16px}
@@ -51,18 +61,18 @@ header{background:#fff;border-bottom:1px solid #e7e5e4;padding:14px 24px;display
 .stat-value{display:block;font-size:24px;font-weight:500;letter-spacing:-0.03em;line-height:1}
 .stat-sub{display:block;font-size:11px;color:#a8a29e;margin-top:4px}
 
-#error-bar{display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 16px;font-size:13px;color:#991b1b;margin-bottom:16px;display:none}
+#error-bar{display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 16px;font-size:13px;color:#991b1b;margin-bottom:16px}
 
-.note{font-size:11px;color:#a8a29e;line-height:1.6;padding:0 4px}
-
-footer{text-align:center;font-size:11px;color:#a8a29e;padding:16px 16px 32px;line-height:1.9}
+.note{font-size:11px;color:#a8a29e;line-height:1.7;padding:0 4px}
+footer{text-align:center;font-size:11px;color:#a8a29e;padding:16px 16px 32px;line-height:2}
 
 @media(max-width:580px){
   header{padding:12px 14px}
   .container{padding:14px 12px 32px}
   .card{padding:14px}
   .stat-value{font-size:20px}
-  .update-btn span:last-child{display:none}
+  .zoom-hint{display:none}
+  .header-left h1{font-size:15px}
 }
 </style>
 </head>
@@ -73,10 +83,12 @@ footer{text-align:center;font-size:11px;color:#a8a29e;padding:16px 16px 32px;lin
     <h1>🌡️ Temperaturas · Castellón de la Plana</h1>
     <p id="lastUpdate">Sin datos · pulsa el botón para cargar</p>
   </div>
-  <button class="update-btn" id="updateBtn" onclick="loadData()">
-    <span id="btnIcon" style="font-size:15px">↻</span>
-    <span>Actualizar datos</span>
-  </button>
+  <div class="header-actions">
+    <button class="btn btn-primary" id="updateBtn" onclick="loadData()">
+      <i id="btnIcon" style="font-style:normal;font-size:15px">↻</i>
+      Actualizar datos
+    </button>
+  </div>
 </header>
 
 <div class="container">
@@ -94,17 +106,25 @@ footer{text-align:center;font-size:11px;color:#a8a29e;padding:16px 16px 32px;lin
       <span class="legend-item"><span class="sw-line" style="border-color:#9ca3af"></span>Normal media</span>
     </div>
 
-    <div class="chart-title" id="chartTitle"></div>
+    <div class="chart-toolbar">
+      <div class="chart-title" id="chartTitle"> </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="zoom-hint">🖱 rueda · arrastrar para navegar</span>
+        <button class="btn btn-sm" id="resetZoomBtn" onclick="resetZoom()" style="display:none">↺ Reset zoom</button>
+      </div>
+    </div>
+
     <div class="chart-wrapper">
-      <canvas id="myChart" role="img" aria-label="Comparativa de temperaturas mensuales por año para Castellón de la Plana"></canvas>
+      <canvas id="myChart" role="img" aria-label="Comparativa de temperaturas mensuales por año para Castellón de la Plana, 1990–hoy"></canvas>
       <div id="overlay">
         <div class="spinner"></div>
         <span>Descargando datos meteorológicos…</span>
+        <span id="progress-text"></span>
       </div>
       <div id="empty-state">
-        <span>📊</span>
+        <span style="font-size:28px">📊</span>
         <span>Pulsa <strong>Actualizar datos</strong> para cargar</span>
-        <p>Datos desde Open-Meteo Archive API · gratis y sin registro</p>
+        <p>Datos desde 1990 · Open-Meteo Archive API · sin registro</p>
       </div>
     </div>
   </div>
@@ -126,42 +146,47 @@ footer{text-align:center;font-size:11px;color:#a8a29e;padding:16px 16px 32px;lin
       <span class="stat-sub" id="s-anom-sub">respecto a la normal 1991–2020</span>
     </div>
     <div class="stat-card">
-      <span class="stat-label">Tendencia 2018 → hoy</span>
+      <span class="stat-label">Tendencia 1990 → hoy</span>
       <span class="stat-value" id="s-trend">—</span>
       <span class="stat-sub" id="s-trend-sub">pendiente regresión lineal</span>
     </div>
   </div>
 
   <p class="note">
-    ℹ️ Cada barra muestra la <strong>media mensual de máximas y mínimas diarias</strong> del año correspondiente.
-    El mes en curso puede aparecer incompleto. Los datos se obtienen en tiempo real desde
-    <a href="https://open-meteo.com" target="_blank">Open-Meteo Archive API</a> (latitud 39.99° N, longitud 0.05° O).
-    La normal climática 1991–2020 es la de la estación AEMET de Castellón (8500A).
+    ℹ️ Cada barra muestra la <strong>media mensual de máximas y mínimas diarias</strong>.
+    El mes en curso puede estar incompleto. Datos desde <strong>1990</strong> obtenidos en tiempo real de
+    <a href="https://open-meteo.com" target="_blank">Open-Meteo Archive API</a>
+    (ERA5 reanalysis, lat 39.99° N, lon 0.05° O).
+    Normal climática 1991–2020 según <a href="https://www.aemet.es" target="_blank">AEMET</a> est. 8500A.
+    Usa la rueda del ratón o arrastra para hacer zoom y navegar por los años.
   </p>
 
 </div>
 
 <footer>
-  Datos meteorológicos: <a href="https://open-meteo.com" target="_blank">Open-Meteo Archive API</a> ·
-  Normal climática 1991–2020: <a href="https://www.aemet.es" target="_blank">AEMET</a> ·
-  Visualización: <a href="https://www.chartjs.org" target="_blank">Chart.js 4</a>
+  Datos: <a href="https://open-meteo.com" target="_blank">Open-Meteo Archive API (ERA5)</a> ·
+  Normal climática: <a href="https://www.aemet.es" target="_blank">AEMET</a> ·
+  Gráficas: <a href="https://www.chartjs.org" target="_blank">Chart.js 4</a>
 </footer>
 
 <script>
-// ── Normales climáticas 1991-2020 (AEMET estación Castellón 8500A) ─────────
+// ── Normales 1991-2020 (AEMET estación Castellón 8500A) ────────────────────
 const NORMAL = {
   max: [15.5,16.5,19.0,21.5,25.0,29.5,32.5,33.0,29.0,24.0,19.5,16.0],
   min: [6.0, 6.5, 8.5,11.0,14.5,18.5,21.5,22.0,19.0,15.0,10.5, 7.0]
 };
 NORMAL.med = NORMAL.max.map((v,i) => +((v + NORMAL.min[i]) / 2).toFixed(1));
 
-const MONTHS     = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-const MONTHS_S   = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+const MONTHS   = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const MONTHS_S = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+const START_YEAR = 1990;
 
 // ── Estado ──────────────────────────────────────────────────────────────────
-let yearData     = {};
+let yearData      = {};
 let selectedMonth = new Date().getMonth();
-let myChart      = null;
+let myChart       = null;
+let isZoomed      = false;
 
 // ── Botones de mes ───────────────────────────────────────────────────────────
 const grid = document.getElementById('monthGrid');
@@ -174,13 +199,11 @@ MONTHS_S.forEach((m, i) => {
   grid.appendChild(btn);
 });
 
-// ── Chart ────────────────────────────────────────────────────────────────────
-const ctx = document.getElementById('myChart').getContext('2d');
-
+// ── Datasets ─────────────────────────────────────────────────────────────────
 function buildDatasets(m) {
   const years  = Object.keys(yearData).map(Number).sort();
-  const labels = years.map(String);
   const n      = years.length;
+  const labels = years.map(String);
 
   const ranges = years.map(yr => {
     const mx = yearData[yr].max[m], mn = yearData[yr].min[m];
@@ -199,13 +222,13 @@ function buildDatasets(m) {
         data: ranges, type: 'bar',
         backgroundColor: 'rgba(93,202,165,0.42)',
         borderColor: 'rgba(15,110,86,0.5)',
-        borderWidth: 1, borderRadius: 3, borderSkipped: false, order: 3
+        borderWidth: 1, borderRadius: 2, borderSkipped: false, order: 3
       },
       {
         label: 'Media mensual',
         data: meds, type: 'line',
         showLine: false,
-        pointRadius: 5, pointHoverRadius: 7,
+        pointRadius: 4, pointHoverRadius: 6,
         backgroundColor: '#085041', borderColor: '#085041', order: 1
       },
       {
@@ -230,23 +253,28 @@ function buildDatasets(m) {
   };
 }
 
+// ── Render chart ─────────────────────────────────────────────────────────────
 function renderChart(m) {
   if (!Object.keys(yearData).length) return;
-  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('empty-state').style.display  = 'none';
   document.getElementById('chartTitle').textContent =
     MONTHS[m] + ' · media mensual de máximas y mínimas diarias, por año';
 
   const chartData = buildDatasets(m);
+
   if (myChart) {
     myChart.data = chartData;
+    myChart.resetZoom();
     myChart.update('none');
+    setZoomed(false);
   } else {
-    myChart = new Chart(ctx, {
+    myChart = new Chart(document.getElementById('myChart').getContext('2d'), {
       type: 'bar',
       data: chartData,
       options: {
-        responsive: true, maintainAspectRatio: false,
-        animation: { duration: 400 },
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 300 },
         interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: { display: false },
@@ -264,17 +292,37 @@ function renderChart(m) {
               },
               filter: item => item.raw !== null
             }
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              onPanComplete() { setZoomed(true); }
+            },
+            zoom: {
+              wheel: { enabled: true },
+              pinch: { enabled: true },
+              mode: 'x',
+              onZoomComplete() { setZoomed(true); }
+            }
           }
         },
         scales: {
           x: {
-            ticks: { font: { size: 12 }, color: '#78716c' },
+            ticks: {
+              font: { size: 11 },
+              color: '#78716c',
+              maxRotation: 45,
+              autoSkip: true,
+              maxTicksLimit: 20
+            },
             grid: { color: 'rgba(0,0,0,0.05)' }
           },
           y: {
             ticks: {
               callback: v => v + '°',
-              font: { size: 12 }, color: '#78716c'
+              font: { size: 12 },
+              color: '#78716c'
             },
             grid: { color: 'rgba(0,0,0,0.05)' },
             title: { display: true, text: '°C', font: { size: 11 }, color: '#a8a29e' }
@@ -286,7 +334,16 @@ function renderChart(m) {
   updateStats(m);
 }
 
-// ── Estadísticas ─────────────────────────────────────────────────────────────
+function resetZoom() {
+  if (myChart) { myChart.resetZoom(); setZoomed(false); }
+}
+
+function setZoomed(v) {
+  isZoomed = v;
+  document.getElementById('resetZoomBtn').style.display = v ? 'inline-flex' : 'none';
+}
+
+// ── Estadísticas ──────────────────────────────────────────────────────────────
 function updateStats(m) {
   const years = Object.keys(yearData).map(Number).sort();
   const pts = years
@@ -295,19 +352,17 @@ function updateStats(m) {
       max: yearData[yr].max[m],
       min: yearData[yr].min[m],
       med: (yearData[yr].max[m] !== null && yearData[yr].min[m] !== null)
-           ? (yearData[yr].max[m] + yearData[yr].min[m]) / 2
-           : null
+           ? (yearData[yr].max[m] + yearData[yr].min[m]) / 2 : null
     }))
     .filter(d => d.max !== null && d.min !== null);
 
   if (!pts.length) return;
 
-  const warmest  = pts.reduce((a,b) => b.max > a.max ? b : a);
-  const coldest  = pts.reduce((a,b) => b.min < a.min ? b : a);
-  const anoms    = pts.filter(d=>d.med!==null).map(d => d.med - NORMAL.med[m]);
-  const avgAnom  = anoms.length ? +(anoms.reduce((a,b)=>a+b,0)/anoms.length).toFixed(1) : null;
+  const warmest = pts.reduce((a,b) => b.max > a.max ? b : a);
+  const coldest = pts.reduce((a,b) => b.min < a.min ? b : a);
+  const anoms   = pts.filter(d=>d.med!==null).map(d => d.med - NORMAL.med[m]);
+  const avgAnom = anoms.length ? +(anoms.reduce((a,b)=>a+b,0)/anoms.length).toFixed(1) : null;
 
-  // Regresión lineal sobre la media
   const tpts = pts.filter(d=>d.med!==null);
   let slope = null;
   if (tpts.length >= 3) {
@@ -319,21 +374,21 @@ function updateStats(m) {
     slope = den ? +(num/den).toFixed(2) : null;
   }
 
-  set('s-warm',     warmest.yr,  `Máx media: ${warmest.max.toFixed(1)}°C`, null);
-  set('s-cold',     coldest.yr,  `Mín media: ${coldest.min.toFixed(1)}°C`, null);
-  set('s-anom',     avgAnom !== null ? (avgAnom>=0?'+':'')+avgAnom+'°C' : '—', null,
-      avgAnom > 0 ? '#b91c1c' : avgAnom < 0 ? '#166534' : null);
-  set('s-trend',    slope !== null ? (slope>=0?'+':'')+slope+'°C/año' : '—', null,
-      slope > 0 ? '#b91c1c' : slope < 0 ? '#166534' : null);
+  setEl('s-warm',  warmest.yr,  `Máx media: ${warmest.max.toFixed(1)}°C`, null);
+  setEl('s-cold',  coldest.yr,  `Mín media: ${coldest.min.toFixed(1)}°C`, null);
+  setEl('s-anom',  avgAnom !== null ? (avgAnom>=0?'+':'')+avgAnom+'°C' : '—', null,
+        avgAnom > 0 ? '#b91c1c' : avgAnom < 0 ? '#166534' : null);
+  setEl('s-trend', slope !== null ? (slope>=0?'+':'')+slope+'°C/año' : '—', null,
+        slope > 0 ? '#b91c1c' : slope < 0 ? '#166534' : null);
 }
 
-function set(id, val, sub, color) {
+function setEl(id, val, sub, color) {
   const el = document.getElementById(id);
   el.textContent = val;
-  if (color) el.style.color = color; else el.style.color = '';
+  el.style.color = color || '';
   if (sub !== null) {
-    const subEl = document.getElementById(id+'-sub');
-    if (subEl) subEl.textContent = sub;
+    const s = document.getElementById(id+'-sub');
+    if (s) s.textContent = sub;
   }
 }
 
@@ -344,44 +399,50 @@ function setMonth(m) {
   renderChart(m);
 }
 
-// ── Carga de datos desde Open-Meteo ─────────────────────────────────────────
+// ── Carga de datos desde Open-Meteo (ERA5, desde 1990) ──────────────────────
 async function loadData() {
-  const btn     = document.getElementById('updateBtn');
-  const icon    = document.getElementById('btnIcon');
-  const overlay = document.getElementById('overlay');
-  const errBar  = document.getElementById('error-bar');
+  const btn      = document.getElementById('updateBtn');
+  const icon     = document.getElementById('btnIcon');
+  const overlay  = document.getElementById('overlay');
+  const errBar   = document.getElementById('error-bar');
+  const progText = document.getElementById('progress-text');
 
   btn.disabled  = true;
   icon.classList.add('spin');
   overlay.style.display = 'flex';
   errBar.style.display  = 'none';
+  progText.textContent  = 'Esto puede tardar unos segundos con datos desde 1990…';
 
   try {
     const today = new Date().toISOString().split('T')[0];
-    const url   = [
+
+    // Open-Meteo Archive API — ERA5 cubre desde 1940
+    const url = [
       'https://archive-api.open-meteo.com/v1/archive',
-      '?latitude=39.9864&longitude=-0.0513',
-      '&start_date=2018-01-01',
+      `?latitude=39.9864&longitude=-0.0513`,
+      `&start_date=${START_YEAR}-01-01`,
       `&end_date=${today}`,
       '&daily=temperature_2m_max,temperature_2m_min',
       '&timezone=Europe%2FMadrid'
     ].join('');
 
-    const res  = await fetch(url);
-    if (!res.ok) throw new Error(`Error HTTP ${res.status} — ${res.statusText}`);
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status} — ${res.statusText}`);
+    progText.textContent = 'Procesando datos…';
     const data = await res.json();
 
-    // Agregar datos diarios → medias mensuales
-    const raw = {};
-    const tArr = data.daily.time;
-    const mxArr = data.daily.temperature_2m_max;
-    const mnArr = data.daily.temperature_2m_min;
+    // Agregar diario → media mensual por año
+    const raw    = {};
+    const tArr   = data.daily.time;
+    const mxArr  = data.daily.temperature_2m_max;
+    const mnArr  = data.daily.temperature_2m_min;
 
     for (let i = 0; i < tArr.length; i++) {
-      const parts = tArr[i].split('-');
-      const yr = +parts[0], m0 = +parts[1] - 1;
+      const p  = tArr[i].split('-');
+      const yr = +p[0], m0 = +p[1] - 1;
+      if (yr < START_YEAR) continue;
       if (!raw[yr]) raw[yr] = {};
-      if (!raw[yr][m0]) raw[yr][m0] = { mxS: 0, mnS: 0, n: 0 };
+      if (!raw[yr][m0]) raw[yr][m0] = { mxS:0, mnS:0, n:0 };
       if (mxArr[i] !== null && mnArr[i] !== null) {
         raw[yr][m0].mxS += mxArr[i];
         raw[yr][m0].mnS += mnArr[i];
@@ -398,8 +459,9 @@ async function loadData() {
       for (let m0 = 0; m0 < 12; m0++) {
         const d = raw[yr][m0];
         if (!d) continue;
-        const partial = (+yr === nowYear && m0 === nowMonth);
-        if (d.n >= (partial ? 3 : 20)) {
+        const partial   = (+yr === nowYear && m0 === nowMonth);
+        const threshold = partial ? 3 : 20;
+        if (d.n >= threshold) {
           yearData[yr].max[m0] = +(d.mxS / d.n).toFixed(1);
           yearData[yr].min[m0] = +(d.mnS / d.n).toFixed(1);
         }
@@ -410,14 +472,16 @@ async function loadData() {
       day:'2-digit', month:'short', year:'numeric',
       hour:'2-digit', minute:'2-digit'
     });
+    const nYears = Object.keys(yearData).length;
     document.getElementById('lastUpdate').textContent =
-      `Actualizado: ${ts} · Open-Meteo Archive API`;
+      `Actualizado: ${ts} · ${nYears} años de datos (Open-Meteo / ERA5)`;
 
     renderChart(selectedMonth);
 
-  } catch (e) {
-    errBar.textContent = `⚠️ No se pudieron cargar los datos: ${e.message}`;
-    errBar.style.display = 'block';
+  } catch(e) {
+    document.getElementById('error-bar').textContent =
+      `⚠️ No se pudieron cargar los datos: ${e.message}`;
+    document.getElementById('error-bar').style.display = 'block';
     console.error(e);
   } finally {
     btn.disabled = false;
