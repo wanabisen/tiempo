@@ -10,69 +10,78 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,sans-serif;background:#f5f5f4;color:#1c1917;min-height:100vh}
-a{color:#1D9E75;text-decoration:none}
-a:hover{text-decoration:underline}
+a{color:#1D9E75;text-decoration:none}a:hover{text-decoration:underline}
 
-header{background:#fff;border-bottom:1px solid #e7e5e4;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
-.header-left h1{font-size:17px;font-weight:500;letter-spacing:-0.01em}
+header{background:#fff;border-bottom:1px solid #e7e5e4;padding:13px 24px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
+.header-left h1{font-size:16px;font-weight:500;letter-spacing:-0.01em}
 .header-left p{font-size:12px;color:#78716c;margin-top:2px}
 
-.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;font-size:13px;font-weight:500;border:1px solid #d6d3d1;border-radius:8px;background:#fff;color:#1c1917;cursor:pointer;transition:background .15s,transform .1s;white-space:nowrap;font-family:inherit}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;font-size:13px;font-weight:500;border:1px solid #d6d3d1;border-radius:8px;background:#fff;color:#1c1917;cursor:pointer;transition:background .15s,transform .1s;white-space:nowrap;font-family:inherit}
 .btn:hover{background:#f5f5f4;border-color:#a8a29e}
 .btn:active{transform:scale(0.97)}
-.btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-.btn-primary{background:#f0fdf4;border-color:#86efac;color:#166534}
-.btn-primary:hover{background:#dcfce7}
-.btn-sm{padding:5px 10px;font-size:12px;border-radius:6px}
-.spin{display:inline-block;animation:spin .8s linear infinite;font-style:normal}
+.btn:disabled{opacity:0.45;cursor:not-allowed;transform:none}
+.btn-green{background:#f0fdf4;border-color:#86efac;color:#166534}
+.btn-green:hover{background:#dcfce7}
+.btn-amber{background:#fffbeb;border-color:#fcd34d;color:#92400e}
+.btn-amber:hover{background:#fef3c7}
+.btn-sm{padding:5px 9px;font-size:12px;border-radius:6px}
+.spin{display:inline-block;animation:spin .75s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+.header-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 
-.header-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.container{max-width:960px;margin:0 auto;padding:18px 16px 40px}
+.card{background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:18px;margin-bottom:14px}
 
-.container{max-width:960px;margin:0 auto;padding:20px 16px 40px}
-
-.card{background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:20px;margin-bottom:16px}
-
-.month-grid{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px}
+.month-grid{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
 .month-btn{padding:5px 11px;font-size:12px;border:1px solid #e7e5e4;border-radius:8px;background:#fff;color:#78716c;cursor:pointer;font-family:inherit;transition:all .12s}
 .month-btn:hover{background:#f5f5f4;color:#1c1917}
 .month-btn.active{background:#f0fdf4;color:#166534;border-color:#86efac;font-weight:500}
 
-.chart-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.chart-title{font-size:14px;font-weight:500;color:#44403c}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:#78716c;margin-bottom:12px;align-items:center}
+.legend-item{display:flex;align-items:center;gap:5px}
+.sw-bar{width:13px;height:13px;border-radius:3px;background:rgba(93,202,165,0.5);border:1px solid rgba(15,110,86,0.45)}
+.sw-pred{width:13px;height:13px;border-radius:3px;background:rgba(234,179,8,0.45);border:1.5px dashed rgba(161,98,7,0.7)}
+.sw-dot{width:9px;height:9px;border-radius:50%;background:#085041}
+.sw-dot-pred{width:9px;height:9px;border-radius:50%;background:#92400e}
+.sw-line{width:18px;height:0;border-top:2px dashed}
+
+.chart-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.chart-title{font-size:13px;font-weight:500;color:#44403c;min-height:18px}
+.toolbar-right{display:flex;gap:5px;align-items:center}
 .zoom-hint{font-size:11px;color:#a8a29e}
 
-.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:#78716c;margin-bottom:14px;align-items:center}
-.legend-item{display:flex;align-items:center;gap:5px}
-.sw-bar{width:14px;height:14px;border-radius:3px;background:rgba(93,202,165,0.5);border:1px solid rgba(15,110,86,0.45)}
-.sw-dot{width:10px;height:10px;border-radius:50%;background:#085041}
-.sw-line{width:20px;height:0;border-top:2px dashed}
-
-.chart-wrapper{position:relative;height:340px}
-#overlay{position:absolute;inset:0;background:rgba(255,255,255,0.9);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:8px;font-size:13px;color:#78716c;z-index:5}
-.spinner{width:26px;height:26px;border:2px solid #e7e5e4;border-top-color:#1D9E75;border-radius:50%;animation:spin .8s linear infinite}
-#progress-text{font-size:12px;color:#a8a29e}
-#empty-state{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#a8a29e;font-size:14px}
+.chart-wrapper{position:relative;height:330px}
+#overlay{position:absolute;inset:0;background:rgba(255,255,255,0.92);display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-radius:8px;font-size:13px;color:#78716c;z-index:5;text-align:center;padding:20px}
+.spinner{width:24px;height:24px;border:2px solid #e7e5e4;border-top-color:#1D9E75;border-radius:50%;animation:spin .8s linear infinite}
+.progress-bar-wrap{width:200px;height:4px;background:#e7e5e4;border-radius:99px;overflow:hidden;margin-top:4px}
+.progress-bar-fill{height:100%;background:#1D9E75;border-radius:99px;transition:width .2s;width:0%}
+#empty-state{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:#a8a29e;font-size:14px}
 #empty-state p{font-size:12px}
 
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:16px}
-.stat-card{background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:14px 16px}
-.stat-label{display:block;font-size:11px;color:#78716c;margin-bottom:6px;text-transform:uppercase;letter-spacing:.03em}
-.stat-value{display:block;font-size:24px;font-weight:500;letter-spacing:-0.03em;line-height:1}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;margin-bottom:14px}
+.stat-card{background:#fff;border:1px solid #e7e5e4;border-radius:12px;padding:13px 15px}
+.stat-label{display:block;font-size:10px;color:#78716c;margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.stat-value{display:block;font-size:22px;font-weight:500;letter-spacing:-0.03em;line-height:1}
 .stat-sub{display:block;font-size:11px;color:#a8a29e;margin-top:4px}
 
-#error-bar{display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 16px;font-size:13px;color:#991b1b;margin-bottom:16px}
+.model-card{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:14px 16px;margin-bottom:14px;display:none}
+.model-card h3{font-size:12px;font-weight:500;color:#92400e;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em}
+.model-grid{display:flex;flex-wrap:wrap;gap:16px}
+.model-item{font-size:12px;color:#78716c}
+.model-item strong{display:block;font-size:14px;color:#1c1917;font-weight:500;margin-top:2px}
+.model-disclaimer{font-size:11px;color:#a16207;margin-top:10px;line-height:1.5;padding-top:8px;border-top:1px solid #fde68a}
 
+#error-bar{display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:9px 14px;font-size:13px;color:#991b1b;margin-bottom:12px}
 .note{font-size:11px;color:#a8a29e;line-height:1.7;padding:0 4px}
-footer{text-align:center;font-size:11px;color:#a8a29e;padding:16px 16px 32px;line-height:2}
+footer{text-align:center;font-size:11px;color:#a8a29e;padding:14px 16px 28px;line-height:2}
 
-@media(max-width:580px){
-  header{padding:12px 14px}
-  .container{padding:14px 12px 32px}
+@media(max-width:600px){
+  header{padding:11px 14px}
+  .container{padding:13px 11px 28px}
   .card{padding:14px}
-  .stat-value{font-size:20px}
+  .stat-value{font-size:19px}
   .zoom-hint{display:none}
-  .header-left h1{font-size:15px}
+  .header-left h1{font-size:14px}
 }
 </style>
 </head>
@@ -84,93 +93,101 @@ footer{text-align:center;font-size:11px;color:#a8a29e;padding:16px 16px 32px;lin
     <p id="lastUpdate">Sin datos · pulsa el botón para cargar</p>
   </div>
   <div class="header-actions">
-    <button class="btn btn-primary" id="updateBtn" onclick="loadData()">
-      <i id="btnIcon" style="font-style:normal;font-size:15px">↻</i>
-      Actualizar datos
+    <button class="btn btn-amber" id="predictBtn" onclick="runPrediction()" disabled title="Carga datos primero">
+      <span id="predictIcon">🧠</span> Predecir 5 años
+    </button>
+    <button class="btn btn-green" id="updateBtn" onclick="loadData()">
+      <span id="updateIcon" style="font-size:15px">↻</span> Actualizar datos
     </button>
   </div>
 </header>
 
 <div class="container">
-
   <div id="error-bar"></div>
 
   <div class="card">
     <div class="month-grid" id="monthGrid"></div>
 
-    <div class="legend">
+    <div class="legend" id="legend">
       <span class="legend-item"><span class="sw-bar"></span>Rango máx–mín</span>
       <span class="legend-item"><span class="sw-dot"></span>Media mensual</span>
       <span class="legend-item"><span class="sw-line" style="border-color:#D85A30"></span>Normal máx</span>
       <span class="legend-item"><span class="sw-line" style="border-color:#378ADD"></span>Normal mín</span>
       <span class="legend-item"><span class="sw-line" style="border-color:#9ca3af"></span>Normal media</span>
+      <span class="legend-item" id="legend-pred" style="display:none"><span class="sw-pred"></span>Predicción NN</span>
+      <span class="legend-item" id="legend-pred-dot" style="display:none"><span class="sw-dot-pred"></span>Media predicha</span>
     </div>
 
     <div class="chart-toolbar">
       <div class="chart-title" id="chartTitle"> </div>
-      <div style="display:flex;gap:6px;align-items:center">
-        <span class="zoom-hint">🖱 rueda · arrastrar para navegar</span>
-        <button class="btn btn-sm" id="resetZoomBtn" onclick="resetZoom()" style="display:none">↺ Reset zoom</button>
+      <div class="toolbar-right">
+        <span class="zoom-hint">🖱 rueda · arrastrar</span>
+        <button class="btn btn-sm" id="resetZoomBtn" onclick="resetZoom()" style="display:none">↺ Reset</button>
       </div>
     </div>
 
     <div class="chart-wrapper">
-      <canvas id="myChart" role="img" aria-label="Comparativa de temperaturas mensuales por año para Castellón de la Plana, 1990–hoy"></canvas>
+      <canvas id="myChart" role="img" aria-label="Comparativa de temperaturas por año para Castellón de la Plana, 1990–hoy con predicción NN"></canvas>
       <div id="overlay">
-        <div class="spinner"></div>
-        <span>Descargando datos meteorológicos…</span>
-        <span id="progress-text"></span>
+        <div class="spinner" id="overlaySpinner"></div>
+        <span id="overlayTitle">Cargando…</span>
+        <span id="overlaySubtitle" style="font-size:12px;color:#a8a29e"></span>
+        <div class="progress-bar-wrap" id="progressWrap" style="display:none">
+          <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <span id="progressLabel" style="font-size:11px;color:#a8a29e"></span>
       </div>
       <div id="empty-state">
         <span style="font-size:28px">📊</span>
         <span>Pulsa <strong>Actualizar datos</strong> para cargar</span>
-        <p>Datos desde 1990 · Open-Meteo Archive API · sin registro</p>
+        <p>Histórico desde 1990 · Open-Meteo Archive API · sin registro</p>
       </div>
     </div>
   </div>
 
+  <!-- Tarjetas de estadísticas -->
   <div class="stats-grid">
-    <div class="stat-card">
-      <span class="stat-label">Año más cálido (máx media)</span>
-      <span class="stat-value" id="s-warm">—</span>
-      <span class="stat-sub" id="s-warm-sub"></span>
+    <div class="stat-card"><span class="stat-label">Año más cálido (máx media)</span><span class="stat-value" id="s-warm">—</span><span class="stat-sub" id="s-warm-sub"></span></div>
+    <div class="stat-card"><span class="stat-label">Año más frío (mín media)</span><span class="stat-value" id="s-cold">—</span><span class="stat-sub" id="s-cold-sub"></span></div>
+    <div class="stat-card"><span class="stat-label">Anomalía media vs normal</span><span class="stat-value" id="s-anom">—</span><span class="stat-sub" id="s-anom-sub">respecto a la normal 1991–2020</span></div>
+    <div class="stat-card"><span class="stat-label">Tendencia 1990 → hoy</span><span class="stat-value" id="s-trend">—</span><span class="stat-sub" id="s-trend-sub">pendiente regresión lineal</span></div>
+  </div>
+
+  <!-- Tarjeta del modelo (aparece tras predicción) -->
+  <div class="model-card" id="modelCard">
+    <h3>🧠 Modelo de red neuronal</h3>
+    <div class="model-grid">
+      <div class="model-item">Arquitectura<strong id="m-arch">—</strong></div>
+      <div class="model-item">Ventana temporal<strong id="m-window">—</strong></div>
+      <div class="model-item">Muestras de entrenamiento<strong id="m-samples">—</strong></div>
+      <div class="model-item">Épocas entrenadas<strong id="m-epochs">—</strong></div>
+      <div class="model-item">RMSE máximas<strong id="m-rmse-max">—</strong></div>
+      <div class="model-item">RMSE mínimas<strong id="m-rmse-min">—</strong></div>
+      <div class="model-item">Mes predicho<strong id="m-month">—</strong></div>
     </div>
-    <div class="stat-card">
-      <span class="stat-label">Año más frío (mín media)</span>
-      <span class="stat-value" id="s-cold">—</span>
-      <span class="stat-sub" id="s-cold-sub"></span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Anomalía media vs normal</span>
-      <span class="stat-value" id="s-anom">—</span>
-      <span class="stat-sub" id="s-anom-sub">respecto a la normal 1991–2020</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-label">Tendencia 1990 → hoy</span>
-      <span class="stat-value" id="s-trend">—</span>
-      <span class="stat-sub" id="s-trend-sub">pendiente regresión lineal</span>
-    </div>
+    <p class="model-disclaimer">
+      ⚠️ Predicción estadística basada en patrones históricos. <strong>No es una proyección climática</strong>.
+      La red aprende la tendencia y variabilidad histórica del mes seleccionado y extrapola 5 años hacia adelante.
+      El error acumulado aumenta con cada año predicho. Los datos reales pueden diferir significativamente.
+    </p>
   </div>
 
   <p class="note">
-    ℹ️ Cada barra muestra la <strong>media mensual de máximas y mínimas diarias</strong>.
-    El mes en curso puede estar incompleto. Datos desde <strong>1990</strong> obtenidos en tiempo real de
-    <a href="https://open-meteo.com" target="_blank">Open-Meteo Archive API</a>
-    (ERA5 reanalysis, lat 39.99° N, lon 0.05° O).
-    Normal climática 1991–2020 según <a href="https://www.aemet.es" target="_blank">AEMET</a> est. 8500A.
-    Usa la rueda del ratón o arrastra para hacer zoom y navegar por los años.
+    Datos desde <strong>1990</strong> · <a href="https://open-meteo.com" target="_blank">Open-Meteo Archive API (ERA5)</a>, lat 39.99° N lon 0.05° O ·
+    Normal climática 1991–2020: <a href="https://www.aemet.es" target="_blank">AEMET</a> est. 8500A ·
+    Red neuronal: <a href="https://www.tensorflow.org/js" target="_blank">TensorFlow.js</a> MLP ventana deslizante.
   </p>
-
 </div>
 
 <footer>
   Datos: <a href="https://open-meteo.com" target="_blank">Open-Meteo Archive API (ERA5)</a> ·
-  Normal climática: <a href="https://www.aemet.es" target="_blank">AEMET</a> ·
-  Gráficas: <a href="https://www.chartjs.org" target="_blank">Chart.js 4</a>
+  Normal: <a href="https://www.aemet.es" target="_blank">AEMET</a> ·
+  Gráficas: <a href="https://www.chartjs.org" target="_blank">Chart.js 4</a> ·
+  NN: <a href="https://www.tensorflow.org/js" target="_blank">TensorFlow.js</a>
 </footer>
 
 <script>
-// ── Normales 1991-2020 (AEMET estación Castellón 8500A) ────────────────────
+// ── Normales 1991-2020 (AEMET estación Castellón 8500A) ─────────────────────
 const NORMAL = {
   max: [15.5,16.5,19.0,21.5,25.0,29.5,32.5,33.0,29.0,24.0,19.5,16.0],
   min: [6.0, 6.5, 8.5,11.0,14.5,18.5,21.5,22.0,19.0,15.0,10.5, 7.0]
@@ -179,13 +196,15 @@ NORMAL.med = NORMAL.max.map((v,i) => +((v + NORMAL.min[i]) / 2).toFixed(1));
 
 const MONTHS   = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const MONTHS_S = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-
-const START_YEAR = 1990;
+const PRED_YEARS = 5;
+const WINDOW     = 6;   // años de contexto para la red
+const EPOCHS     = 400;
 
 // ── Estado ──────────────────────────────────────────────────────────────────
 let yearData      = {};
 let selectedMonth = new Date().getMonth();
 let myChart       = null;
+let predictions   = null;  // { preds:[{yr,max,min}], rmseMax, rmseMin, month }
 let isZoomed      = false;
 
 // ── Botones de mes ───────────────────────────────────────────────────────────
@@ -199,66 +218,127 @@ MONTHS_S.forEach((m, i) => {
   grid.appendChild(btn);
 });
 
-// ── Datasets ─────────────────────────────────────────────────────────────────
-function buildDatasets(m) {
-  const years  = Object.keys(yearData).map(Number).sort();
-  const n      = years.length;
-  const labels = years.map(String);
+// ── Plugin: separador histórico / predicción ─────────────────────────────────
+const predSeparatorPlugin = {
+  id: 'predSeparator',
+  afterDraw(chart) {
+    if (!predictions) return;
+    const labels = chart.data.labels;
+    const histYears = Object.keys(yearData).map(Number);
+    const lastHist  = String(Math.max(...histYears));
+    const idx       = labels.indexOf(lastHist);
+    if (idx < 0 || idx >= labels.length - 1) return;
 
-  const ranges = years.map(yr => {
+    const xAxis = chart.scales.x;
+    const yAxis = chart.scales.y;
+    const x1    = xAxis.getPixelForValue(idx);
+    const x2    = xAxis.getPixelForValue(idx + 1);
+    const xLine = (x1 + x2) / 2;
+
+    const ctx = chart.ctx;
+    ctx.save();
+
+    // Fondo zona predicción
+    ctx.fillStyle = 'rgba(253,230,138,0.12)';
+    ctx.fillRect(xLine, yAxis.top, chart.chartArea.right - xLine, yAxis.bottom - yAxis.top);
+
+    // Línea separadora
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(161,98,7,0.4)';
+    ctx.lineWidth   = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(xLine, yAxis.top);
+    ctx.lineTo(xLine, yAxis.bottom);
+    ctx.stroke();
+
+    // Etiqueta
+    ctx.setLineDash([]);
+    ctx.fillStyle  = '#b45309';
+    ctx.font       = '500 10px -apple-system,sans-serif';
+    ctx.textAlign  = 'left';
+    ctx.fillText('← histórico   predicción NN →', xLine - 80, yAxis.top + 13);
+    ctx.restore();
+  }
+};
+
+// ── Datasets del gráfico ─────────────────────────────────────────────────────
+function buildDatasets(m) {
+  const histYears = Object.keys(yearData).map(Number).sort();
+  const predYearsList = (predictions && predictions.month === m)
+    ? predictions.preds.map(p => p.yr) : [];
+  const allYears = [...histYears, ...predYearsList];
+  const n        = allYears.length;
+  const labels   = allYears.map(String);
+
+  const isPred = yr => predYearsList.includes(yr);
+
+  const ranges = allYears.map(yr => {
+    if (isPred(yr)) return null;
     const mx = yearData[yr].max[m], mn = yearData[yr].min[m];
     return (mx !== null && mn !== null) ? [+mn.toFixed(1), +mx.toFixed(1)] : null;
   });
-  const meds = years.map(yr => {
+  const meds = allYears.map(yr => {
+    if (isPred(yr)) return null;
     const mx = yearData[yr].max[m], mn = yearData[yr].min[m];
     return (mx !== null && mn !== null) ? +((mx + mn) / 2).toFixed(1) : null;
   });
 
-  return {
-    labels,
-    datasets: [
-      {
-        label: 'Rango máx–mín',
-        data: ranges, type: 'bar',
-        backgroundColor: 'rgba(93,202,165,0.42)',
-        borderColor: 'rgba(15,110,86,0.5)',
-        borderWidth: 1, borderRadius: 2, borderSkipped: false, order: 3
-      },
-      {
-        label: 'Media mensual',
-        data: meds, type: 'line',
-        showLine: false,
-        pointRadius: 4, pointHoverRadius: 6,
-        backgroundColor: '#085041', borderColor: '#085041', order: 1
-      },
-      {
-        label: 'Normal máx',
-        data: Array(n).fill(NORMAL.max[m]), type: 'line',
-        borderColor: '#D85A30', borderDash: [5,4],
-        borderWidth: 1.5, pointRadius: 0, order: 0
-      },
-      {
-        label: 'Normal mín',
-        data: Array(n).fill(NORMAL.min[m]), type: 'line',
-        borderColor: '#378ADD', borderDash: [5,4],
-        borderWidth: 1.5, pointRadius: 0, order: 0
-      },
-      {
-        label: 'Normal media',
-        data: Array(n).fill(NORMAL.med[m]), type: 'line',
-        borderColor: '#9ca3af', borderDash: [4,3],
-        borderWidth: 1.5, pointRadius: 0, order: 0
-      }
-    ]
-  };
+  const datasets = [
+    { label:'Rango máx–mín', data:ranges, type:'bar',
+      backgroundColor:'rgba(93,202,165,0.42)', borderColor:'rgba(15,110,86,0.5)',
+      borderWidth:1, borderRadius:2, borderSkipped:false, order:3 },
+    { label:'Media mensual', data:meds, type:'line', showLine:false,
+      pointRadius:4, pointHoverRadius:6,
+      backgroundColor:'#085041', borderColor:'#085041', order:1 },
+    { label:'Normal máx',   data:Array(n).fill(NORMAL.max[m]), type:'line',
+      borderColor:'#D85A30', borderDash:[5,4], borderWidth:1.5, pointRadius:0, order:0 },
+    { label:'Normal mín',   data:Array(n).fill(NORMAL.min[m]), type:'line',
+      borderColor:'#378ADD', borderDash:[5,4], borderWidth:1.5, pointRadius:0, order:0 },
+    { label:'Normal media', data:Array(n).fill(NORMAL.med[m]), type:'line',
+      borderColor:'#9ca3af', borderDash:[4,3], borderWidth:1.5, pointRadius:0, order:0 },
+  ];
+
+  if (predictions && predictions.month === m) {
+    const predRanges = allYears.map(yr => {
+      const p = predictions.preds.find(p => p.yr === yr);
+      return p ? [+p.min.toFixed(1), +p.max.toFixed(1)] : null;
+    });
+    const predMeds = allYears.map(yr => {
+      const p = predictions.preds.find(p => p.yr === yr);
+      return p ? +((p.max + p.min) / 2).toFixed(1) : null;
+    });
+    datasets.push({
+      label:'Predicción NN', data:predRanges, type:'bar',
+      backgroundColor:'rgba(234,179,8,0.38)',
+      borderColor:'rgba(161,98,7,0.7)',
+      borderWidth:1.5, borderDash:[4,3],
+      borderRadius:2, borderSkipped:false, order:3
+    });
+    datasets.push({
+      label:'Media predicha', data:predMeds, type:'line', showLine:false,
+      pointRadius:5, pointHoverRadius:7,
+      pointStyle:'rectRot',
+      backgroundColor:'#92400e', borderColor:'#92400e', order:1
+    });
+    document.getElementById('legend-pred').style.display     = '';
+    document.getElementById('legend-pred-dot').style.display = '';
+  } else {
+    document.getElementById('legend-pred').style.display     = 'none';
+    document.getElementById('legend-pred-dot').style.display = 'none';
+  }
+
+  return { labels, datasets };
 }
 
 // ── Render chart ─────────────────────────────────────────────────────────────
 function renderChart(m) {
   if (!Object.keys(yearData).length) return;
-  document.getElementById('empty-state').style.display  = 'none';
+  document.getElementById('empty-state').style.display = 'none';
+
+  const hasPred = predictions && predictions.month === m;
   document.getElementById('chartTitle').textContent =
-    MONTHS[m] + ' · media mensual de máximas y mínimas diarias, por año';
+    MONTHS[m] + ' · media mensual de máx/mín diarias por año' +
+    (hasPred ? '  +  predicción NN 5 años' : '');
 
   const chartData = buildDatasets(m);
 
@@ -271,10 +351,10 @@ function renderChart(m) {
     myChart = new Chart(document.getElementById('myChart').getContext('2d'), {
       type: 'bar',
       data: chartData,
+      plugins: [predSeparatorPlugin],
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 300 },
+        responsive: true, maintainAspectRatio: false,
+        animation: { duration: 250 },
         interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: { display: false },
@@ -282,50 +362,35 @@ function renderChart(m) {
             callbacks: {
               label(c) {
                 if (c.raw === null) return null;
-                if (c.dataset.label === 'Rango máx–mín' && Array.isArray(c.raw))
-                  return `  Mín ${c.raw[0]}°C — Máx ${c.raw[1]}°C`;
-                if (c.dataset.label === 'Media mensual')
-                  return `  Media: ${c.raw}°C`;
-                if (c.dataset.label.startsWith('Normal'))
-                  return `  ${c.dataset.label}: ${c.raw}°C`;
+                const lbl = c.dataset.label;
+                if ((lbl === 'Rango máx–mín' || lbl === 'Predicción NN') && Array.isArray(c.raw))
+                  return `  ${lbl}: ${c.raw[0]}° — ${c.raw[1]}°C`;
+                if (lbl === 'Media mensual' || lbl === 'Media predicha')
+                  return `  ${lbl}: ${c.raw}°C`;
+                if (lbl.startsWith('Normal'))
+                  return `  ${lbl}: ${c.raw}°C`;
                 return null;
               },
               filter: item => item.raw !== null
             }
           },
           zoom: {
-            pan: {
-              enabled: true,
-              mode: 'x',
-              onPanComplete() { setZoomed(true); }
-            },
+            pan: { enabled:true, mode:'x', onPanComplete(){ setZoomed(true); } },
             zoom: {
-              wheel: { enabled: true },
-              pinch: { enabled: true },
-              mode: 'x',
-              onZoomComplete() { setZoomed(true); }
+              wheel:{ enabled:true }, pinch:{ enabled:true }, mode:'x',
+              onZoomComplete(){ setZoomed(true); }
             }
           }
         },
         scales: {
           x: {
-            ticks: {
-              font: { size: 11 },
-              color: '#78716c',
-              maxRotation: 45,
-              autoSkip: true,
-              maxTicksLimit: 20
-            },
-            grid: { color: 'rgba(0,0,0,0.05)' }
+            ticks:{ font:{size:11}, color:'#78716c', maxRotation:45, autoSkip:true, maxTicksLimit:22 },
+            grid:{ color:'rgba(0,0,0,0.05)' }
           },
           y: {
-            ticks: {
-              callback: v => v + '°',
-              font: { size: 12 },
-              color: '#78716c'
-            },
-            grid: { color: 'rgba(0,0,0,0.05)' },
-            title: { display: true, text: '°C', font: { size: 11 }, color: '#a8a29e' }
+            ticks:{ callback:v=>v+'°', font:{size:12}, color:'#78716c' },
+            grid:{ color:'rgba(0,0,0,0.05)' },
+            title:{ display:true, text:'°C', font:{size:11}, color:'#a8a29e' }
           }
         }
       }
@@ -334,93 +399,223 @@ function renderChart(m) {
   updateStats(m);
 }
 
-function resetZoom() {
-  if (myChart) { myChart.resetZoom(); setZoomed(false); }
-}
-
-function setZoomed(v) {
-  isZoomed = v;
-  document.getElementById('resetZoomBtn').style.display = v ? 'inline-flex' : 'none';
-}
+function resetZoom() { if (myChart){ myChart.resetZoom(); setZoomed(false); } }
+function setZoomed(v){ isZoomed=v; document.getElementById('resetZoomBtn').style.display=v?'inline-flex':'none'; }
 
 // ── Estadísticas ──────────────────────────────────────────────────────────────
 function updateStats(m) {
   const years = Object.keys(yearData).map(Number).sort();
-  const pts = years
-    .map(yr => ({
-      yr,
-      max: yearData[yr].max[m],
-      min: yearData[yr].min[m],
-      med: (yearData[yr].max[m] !== null && yearData[yr].min[m] !== null)
-           ? (yearData[yr].max[m] + yearData[yr].min[m]) / 2 : null
-    }))
-    .filter(d => d.max !== null && d.min !== null);
-
+  const pts = years.map(yr=>({
+    yr, max:yearData[yr].max[m], min:yearData[yr].min[m],
+    med:(yearData[yr].max[m]!==null&&yearData[yr].min[m]!==null)
+        ?(yearData[yr].max[m]+yearData[yr].min[m])/2:null
+  })).filter(d=>d.max!==null&&d.min!==null);
   if (!pts.length) return;
 
-  const warmest = pts.reduce((a,b) => b.max > a.max ? b : a);
-  const coldest = pts.reduce((a,b) => b.min < a.min ? b : a);
-  const anoms   = pts.filter(d=>d.med!==null).map(d => d.med - NORMAL.med[m]);
+  const warmest = pts.reduce((a,b)=>b.max>a.max?b:a);
+  const coldest = pts.reduce((a,b)=>b.min<a.min?b:a);
+  const anoms   = pts.filter(d=>d.med!==null).map(d=>d.med-NORMAL.med[m]);
   const avgAnom = anoms.length ? +(anoms.reduce((a,b)=>a+b,0)/anoms.length).toFixed(1) : null;
 
-  const tpts = pts.filter(d=>d.med!==null);
-  let slope = null;
-  if (tpts.length >= 3) {
-    const n = tpts.length;
-    const xm = tpts.reduce((a,d)=>a+d.yr,0)/n;
-    const ym = tpts.reduce((a,d)=>a+d.med,0)/n;
-    const num = tpts.reduce((a,d)=>a+(d.yr-xm)*(d.med-ym),0);
-    const den = tpts.reduce((a,d)=>a+(d.yr-xm)**2,0);
-    slope = den ? +(num/den).toFixed(2) : null;
+  const tpts=pts.filter(d=>d.med!==null);
+  let slope=null;
+  if(tpts.length>=3){
+    const n=tpts.length, xm=tpts.reduce((a,d)=>a+d.yr,0)/n, ym=tpts.reduce((a,d)=>a+d.med,0)/n;
+    const num=tpts.reduce((a,d)=>a+(d.yr-xm)*(d.med-ym),0);
+    const den=tpts.reduce((a,d)=>a+(d.yr-xm)**2,0);
+    slope=den?+(num/den).toFixed(2):null;
   }
-
   setEl('s-warm',  warmest.yr,  `Máx media: ${warmest.max.toFixed(1)}°C`, null);
   setEl('s-cold',  coldest.yr,  `Mín media: ${coldest.min.toFixed(1)}°C`, null);
-  setEl('s-anom',  avgAnom !== null ? (avgAnom>=0?'+':'')+avgAnom+'°C' : '—', null,
-        avgAnom > 0 ? '#b91c1c' : avgAnom < 0 ? '#166534' : null);
-  setEl('s-trend', slope !== null ? (slope>=0?'+':'')+slope+'°C/año' : '—', null,
-        slope > 0 ? '#b91c1c' : slope < 0 ? '#166534' : null);
+  setEl('s-anom',  avgAnom!==null?(avgAnom>=0?'+':'')+avgAnom+'°C':'—', null,
+        avgAnom>0?'#b91c1c':avgAnom<0?'#166534':null);
+  setEl('s-trend', slope!==null?(slope>=0?'+':'')+slope+'°C/año':'—', null,
+        slope>0?'#b91c1c':slope<0?'#166534':null);
 }
-
-function setEl(id, val, sub, color) {
-  const el = document.getElementById(id);
-  el.textContent = val;
-  el.style.color = color || '';
-  if (sub !== null) {
-    const s = document.getElementById(id+'-sub');
-    if (s) s.textContent = sub;
-  }
+function setEl(id,val,sub,color){
+  const el=document.getElementById(id);
+  el.textContent=val; el.style.color=color||'';
+  if(sub!==null){const s=document.getElementById(id+'-sub');if(s)s.textContent=sub;}
 }
 
 function setMonth(m) {
   selectedMonth = m;
-  document.querySelectorAll('.month-btn').forEach((b,i) =>
-    b.classList.toggle('active', i === m));
+  document.querySelectorAll('.month-btn').forEach((b,i)=>b.classList.toggle('active',i===m));
   renderChart(m);
+  document.getElementById('modelCard').style.display =
+    (predictions && predictions.month === m) ? 'block' : 'none';
 }
 
-// ── Carga de datos desde Open-Meteo (ERA5, desde 1990) ──────────────────────
+// ── Red neuronal (TensorFlow.js) ─────────────────────────────────────────────
+let tfLoaded = false;
+
+async function ensureTF() {
+  if (window.tf) return true;
+  return new Promise((resolve, reject) => {
+    showOverlay('Cargando TensorFlow.js…', 'Primera vez: ~3 MB');
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js';
+    s.onload = () => { hideOverlay(); resolve(true); };
+    s.onerror = () => { hideOverlay(); reject(new Error('No se pudo cargar TensorFlow.js')); };
+    document.head.appendChild(s);
+  });
+}
+
+async function runPrediction() {
+  const m = selectedMonth;
+  if (!Object.keys(yearData).length) return;
+
+  try {
+    await ensureTF();
+
+    const years  = Object.keys(yearData).map(Number).sort();
+    const series = years
+      .map(yr => ({ yr, max:yearData[yr].max[m], min:yearData[yr].min[m] }))
+      .filter(d => d.max !== null && d.min !== null);
+
+    if (series.length < WINDOW + 3) {
+      alert(`Necesito al menos ${WINDOW+3} años de datos para este mes.`); return;
+    }
+
+    const btn = document.getElementById('predictBtn');
+    btn.disabled = true;
+    document.getElementById('predictIcon').classList.add('spin');
+    showOverlay('Entrenando red neuronal…', `Mes: ${MONTHS[m]}`, true);
+
+    // ── Normalización ────────────────────────────────────────────────────────
+    const allMax = series.map(d=>d.max), allMin = series.map(d=>d.min);
+    const maxHi=Math.max(...allMax), maxLo=Math.min(...allMax);
+    const minHi=Math.max(...allMin), minLo=Math.min(...allMin);
+    const pad=1.5; // padding para que las predicciones no saturen la normalización
+    const normMax=v=>(v-(maxLo-pad))/((maxHi+pad)-(maxLo-pad));
+    const normMin=v=>(v-(minLo-pad))/((minHi+pad)-(minLo-pad));
+    const denormMax=v=>v*((maxHi+pad)-(maxLo-pad))+(maxLo-pad);
+    const denormMin=v=>v*((minHi+pad)-(minLo-pad))+(minLo-pad);
+
+    // ── Preparar muestras de entrenamiento ────────────────────────────────────
+    const X=[], Y=[];
+    for (let i=WINDOW; i<series.length; i++){
+      const inp=[];
+      for (let j=i-WINDOW; j<i; j++) inp.push(normMax(series[j].max), normMin(series[j].min));
+      X.push(inp);
+      Y.push([normMax(series[i].max), normMin(series[i].min)]);
+    }
+
+    // ── Modelo MLP ────────────────────────────────────────────────────────────
+    const model = tf.sequential({ layers:[
+      tf.layers.dense({ inputShape:[WINDOW*2], units:48, activation:'relu',
+                        kernelRegularizer:tf.regularizers.l2({l2:0.002}) }),
+      tf.layers.dropout({ rate:0.1 }),
+      tf.layers.dense({ units:24, activation:'relu',
+                        kernelRegularizer:tf.regularizers.l2({l2:0.001}) }),
+      tf.layers.dropout({ rate:0.05 }),
+      tf.layers.dense({ units:12, activation:'relu' }),
+      tf.layers.dense({ units:2 })
+    ]});
+    model.compile({ optimizer:tf.train.adam(0.004), loss:'meanSquaredError' });
+
+    const xs = tf.tensor2d(X);
+    const ys = tf.tensor2d(Y);
+
+    await model.fit(xs, ys, {
+      epochs: EPOCHS, batchSize: Math.max(4, Math.floor(X.length/4)),
+      shuffle: true, verbose: 0,
+      callbacks: { onEpochEnd: async (epoch) => {
+        if (epoch % 20 === 0) {
+          const pct = Math.round((epoch / EPOCHS) * 100);
+          document.getElementById('progressFill').style.width = pct + '%';
+          document.getElementById('progressLabel').textContent = `Época ${epoch}/${EPOCHS}`;
+          await tf.nextFrame();
+        }
+      }}
+    });
+
+    // ── RMSE en entrenamiento ─────────────────────────────────────────────────
+    const trainPred  = await model.predict(xs).array();
+    let sumMax=0, sumMin=0;
+    for(let i=0;i<Y.length;i++){
+      sumMax+=(denormMax(trainPred[i][0])-series[i+WINDOW].max)**2;
+      sumMin+=(denormMin(trainPred[i][1])-series[i+WINDOW].min)**2;
+    }
+    const rmseMax = +Math.sqrt(sumMax/Y.length).toFixed(2);
+    const rmseMin = +Math.sqrt(sumMin/Y.length).toFixed(2);
+
+    // ── Predicción iterativa ──────────────────────────────────────────────────
+    let window = series.slice(-WINDOW).map(d=>[normMax(d.max),normMin(d.min)]);
+    const lastYr = series[series.length-1].yr;
+    const preds  = [];
+
+    for (let i=0; i<PRED_YEARS; i++){
+      const inp = tf.tensor2d([window.flat()]);
+      const out = await model.predict(inp).array();
+      let pMax = +denormMax(out[0][0]).toFixed(1);
+      let pMin = +denormMin(out[0][1]).toFixed(1);
+      // Sanidad: mantener el rango dentro de límites razonables
+      pMax = Math.max(NORMAL.max[m]-5, Math.min(NORMAL.max[m]+8, pMax));
+      pMin = Math.max(NORMAL.min[m]-5, Math.min(NORMAL.min[m]+8, pMin));
+      if (pMin > pMax-2) pMin = pMax-2;
+      preds.push({ yr:lastYr+i+1, max:pMax, min:pMin });
+      window = [...window.slice(1), [normMax(pMax), normMin(pMin)]];
+      inp.dispose();
+    }
+
+    xs.dispose(); ys.dispose(); model.dispose();
+
+    predictions = { preds, rmseMax, rmseMin, month:m, samples:X.length };
+    updateModelCard(m);
+    hideOverlay();
+    renderChart(m);
+
+  } catch(e) {
+    hideOverlay();
+    document.getElementById('error-bar').textContent = `⚠️ Error en predicción: ${e.message}`;
+    document.getElementById('error-bar').style.display = 'block';
+    console.error(e);
+  } finally {
+    document.getElementById('predictBtn').disabled = false;
+    document.getElementById('predictIcon').classList.remove('spin');
+  }
+}
+
+function updateModelCard(m){
+  document.getElementById('m-arch').textContent    = 'MLP 3 capas (48→24→12→2)';
+  document.getElementById('m-window').textContent  = `${WINDOW} años anteriores`;
+  document.getElementById('m-samples').textContent = predictions.samples + ' ventanas';
+  document.getElementById('m-epochs').textContent  = EPOCHS;
+  document.getElementById('m-rmse-max').textContent= `±${predictions.rmseMax}°C`;
+  document.getElementById('m-rmse-min').textContent= `±${predictions.rmseMin}°C`;
+  document.getElementById('m-month').textContent   = MONTHS[m];
+  document.getElementById('modelCard').style.display = 'block';
+}
+
+// ── Overlay helpers ───────────────────────────────────────────────────────────
+function showOverlay(title, subtitle='', withProgress=false){
+  document.getElementById('overlayTitle').textContent    = title;
+  document.getElementById('overlaySubtitle').textContent = subtitle;
+  document.getElementById('progressWrap').style.display  = withProgress ? 'block' : 'none';
+  document.getElementById('progressFill').style.width    = '0%';
+  document.getElementById('progressLabel').textContent   = '';
+  document.getElementById('overlay').style.display       = 'flex';
+}
+function hideOverlay(){ document.getElementById('overlay').style.display='none'; }
+
+// ── Carga de datos Open-Meteo ─────────────────────────────────────────────────
 async function loadData() {
-  const btn      = document.getElementById('updateBtn');
-  const icon     = document.getElementById('btnIcon');
-  const overlay  = document.getElementById('overlay');
-  const errBar   = document.getElementById('error-bar');
-  const progText = document.getElementById('progress-text');
+  const btn  = document.getElementById('updateBtn');
+  const icon = document.getElementById('updateIcon');
+  const errBar = document.getElementById('error-bar');
 
   btn.disabled  = true;
   icon.classList.add('spin');
-  overlay.style.display = 'flex';
-  errBar.style.display  = 'none';
-  progText.textContent  = 'Esto puede tardar unos segundos con datos desde 1990…';
+  showOverlay('Descargando datos meteorológicos…', 'ERA5 desde 1990 · puede tardar unos segundos');
+  errBar.style.display = 'none';
 
   try {
     const today = new Date().toISOString().split('T')[0];
-
-    // Open-Meteo Archive API — ERA5 cubre desde 1940
     const url = [
       'https://archive-api.open-meteo.com/v1/archive',
-      `?latitude=39.9864&longitude=-0.0513`,
-      `&start_date=${START_YEAR}-01-01`,
+      '?latitude=39.9864&longitude=-0.0513',
+      '&start_date=1990-01-01',
       `&end_date=${today}`,
       '&daily=temperature_2m_max,temperature_2m_min',
       '&timezone=Europe%2FMadrid'
@@ -428,69 +623,58 @@ async function loadData() {
 
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status} — ${res.statusText}`);
-    progText.textContent = 'Procesando datos…';
+    document.getElementById('overlayTitle').textContent = 'Procesando datos…';
     const data = await res.json();
 
-    // Agregar diario → media mensual por año
-    const raw    = {};
-    const tArr   = data.daily.time;
-    const mxArr  = data.daily.temperature_2m_max;
-    const mnArr  = data.daily.temperature_2m_min;
+    const raw   = {};
+    const tArr  = data.daily.time;
+    const mxArr = data.daily.temperature_2m_max;
+    const mnArr = data.daily.temperature_2m_min;
 
-    for (let i = 0; i < tArr.length; i++) {
-      const p  = tArr[i].split('-');
-      const yr = +p[0], m0 = +p[1] - 1;
-      if (yr < START_YEAR) continue;
-      if (!raw[yr]) raw[yr] = {};
-      if (!raw[yr][m0]) raw[yr][m0] = { mxS:0, mnS:0, n:0 };
-      if (mxArr[i] !== null && mnArr[i] !== null) {
-        raw[yr][m0].mxS += mxArr[i];
-        raw[yr][m0].mnS += mnArr[i];
-        raw[yr][m0].n++;
+    for (let i=0; i<tArr.length; i++){
+      const p=tArr[i].split('-'), yr=+p[0], m0=+p[1]-1;
+      if (yr<1990) continue;
+      if (!raw[yr]) raw[yr]={};
+      if (!raw[yr][m0]) raw[yr][m0]={mxS:0,mnS:0,n:0};
+      if (mxArr[i]!==null&&mnArr[i]!==null){ raw[yr][m0].mxS+=mxArr[i]; raw[yr][m0].mnS+=mnArr[i]; raw[yr][m0].n++; }
+    }
+
+    yearData={};
+    const nowYear=new Date().getFullYear(), nowMonth=new Date().getMonth();
+    for(const yr in raw){
+      yearData[yr]={max:Array(12).fill(null),min:Array(12).fill(null)};
+      for(let m0=0;m0<12;m0++){
+        const d=raw[yr][m0]; if(!d) continue;
+        const partial=(+yr===nowYear&&m0===nowMonth);
+        if(d.n>=(partial?3:20)){ yearData[yr].max[m0]=+(d.mxS/d.n).toFixed(1); yearData[yr].min[m0]=+(d.mnS/d.n).toFixed(1); }
       }
     }
 
-    yearData = {};
-    const nowYear  = new Date().getFullYear();
-    const nowMonth = new Date().getMonth();
+    const ts=new Date().toLocaleString('es-ES',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const nYears=Object.keys(yearData).length;
+    document.getElementById('lastUpdate').textContent=`Actualizado: ${ts} · ${nYears} años · Open-Meteo/ERA5`;
 
-    for (const yr in raw) {
-      yearData[yr] = { max: Array(12).fill(null), min: Array(12).fill(null) };
-      for (let m0 = 0; m0 < 12; m0++) {
-        const d = raw[yr][m0];
-        if (!d) continue;
-        const partial   = (+yr === nowYear && m0 === nowMonth);
-        const threshold = partial ? 3 : 20;
-        if (d.n >= threshold) {
-          yearData[yr].max[m0] = +(d.mxS / d.n).toFixed(1);
-          yearData[yr].min[m0] = +(d.mnS / d.n).toFixed(1);
-        }
-      }
-    }
+    // Limpiar predicciones anteriores si los datos cambiaron
+    predictions = null;
+    document.getElementById('modelCard').style.display='none';
+    document.getElementById('legend-pred').style.display='none';
+    document.getElementById('legend-pred-dot').style.display='none';
 
-    const ts = new Date().toLocaleString('es-ES', {
-      day:'2-digit', month:'short', year:'numeric',
-      hour:'2-digit', minute:'2-digit'
-    });
-    const nYears = Object.keys(yearData).length;
-    document.getElementById('lastUpdate').textContent =
-      `Actualizado: ${ts} · ${nYears} años de datos (Open-Meteo / ERA5)`;
-
+    document.getElementById('predictBtn').disabled = false;
     renderChart(selectedMonth);
 
   } catch(e) {
-    document.getElementById('error-bar').textContent =
-      `⚠️ No se pudieron cargar los datos: ${e.message}`;
-    document.getElementById('error-bar').style.display = 'block';
+    errBar.textContent=`⚠️ No se pudieron cargar los datos: ${e.message}`;
+    errBar.style.display='block';
     console.error(e);
   } finally {
-    btn.disabled = false;
+    btn.disabled=false;
     icon.classList.remove('spin');
-    overlay.style.display = 'none';
+    hideOverlay();
   }
 }
 
-// Carga automática al abrir
+// Auto-carga al abrir
 loadData();
 </script>
 </body>
